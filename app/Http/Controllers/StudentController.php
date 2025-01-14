@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddStudentToTeacherRequest;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Resources\StudentResource;
+use App\Http\Resources\TeacherResource;
 
 class StudentController extends Controller
 {
@@ -81,5 +83,15 @@ class StudentController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
         return response()->json(StudentResource::collection($students), 200);
+    }
+
+    public function teachersOfStudent(Student $student){
+        $teachers = $student->teachers;
+        return response()->json(TeacherResource::collection($teachers), 200);
+    }
+
+    public function addStudentToTeacher(AddStudentToTeacherRequest $request, Student $student){
+        $student->teachers()->attach($request->teacher_id);
+        return response()->json(['message' => 'Student added to teacher'], 200);
     }
 }

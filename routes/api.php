@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 Route::get('students/search/{name}', [StudentController::class, 'searchByName']);
+Route::get('students/{student}/teachers', [StudentController::class, 'teachersOfStudent']);
+Route::post('students/{student}/add-student-to-teacher', [StudentController::class, 'addStudentToTeacher']);
 Route::apiResource('students', StudentController::class);
 
 Route::get('courses/{course}/students', [CourseController::class, 'studentsOfCourse']);
