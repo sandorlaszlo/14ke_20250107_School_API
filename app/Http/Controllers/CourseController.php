@@ -13,15 +13,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $courses = Course::all();
+        // $courses = Course::with('students')->get();
+        return response()->json($courses, 200);
     }
 
     /**
@@ -29,7 +23,9 @@ class CourseController extends Controller
      */
     public function store(StoreCourseRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $course = Course::create($validated);
+        return response()->json($course, 201);
     }
 
     /**
@@ -37,15 +33,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Course $course)
-    {
-        //
+        return response()->json($course, 200);
     }
 
     /**
@@ -53,7 +41,9 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        //
+        $validated = $request->validated();
+        $course->update($validated);
+        return response()->json($course, 200);
     }
 
     /**
@@ -61,6 +51,12 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->delete();
+        return response()->noContent();
+    }
+
+    public function studentsOfCourse(Course $course) {
+        $students = $course->students;
+        return response()->json($students, 200);
     }
 }
