@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Http\Resources\StudentResource;
 
 class CourseController extends Controller
 {
@@ -56,7 +57,7 @@ class CourseController extends Controller
     }
 
     public function studentsOfCourse(Course $course) {
-        $students = $course->students;
+        $students = StudentResource::collection($course->students);
         return response()->json($students, 200);
     }
 }

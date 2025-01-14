@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
@@ -14,7 +15,10 @@ class StudentController extends Controller
     public function index()
     {
         // $students = Student::with('course')->get();
-        $students = Student::all();
+        //$students = Student::all();
+        $students = StudentResource::collection(Student::all());
+
+
         // return response($students, 200);
         return response()->json($students, 200);
     }
@@ -35,7 +39,8 @@ class StudentController extends Controller
     // public function show(Student $student)
     public function show($id)
     {
-        $student = Student::find($id);
+        // $student = StudentResource::make(Student::find($id));
+        $student = new StudentResource(Student::find($id));
         if (!$student) {
             return response()->json(['message' => 'Student not found'], 404);
         }
@@ -53,7 +58,7 @@ class StudentController extends Controller
             return response()->json(['message' => 'Student not found'], 404);
         }
         $student->update($validated);
-        return response()->json($student, 200);
+        return response()->json(new StudentResource($student), 200);
     }
 
     /**
@@ -75,6 +80,6 @@ class StudentController extends Controller
         if ($students->isEmpty()) {
             return response()->json(['message' => 'Student not found'], 404);
         }
-        return response()->json($students, 200);
+        return response()->json(StudentResource::collection($students), 200);
     }
 }

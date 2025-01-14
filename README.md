@@ -8,3 +8,6 @@ Student model:
 
 Migráció újra:
 `php artisan migrate:fresh --seed`
+
+Resource:
+`php artisan make:resource StudentResource`
